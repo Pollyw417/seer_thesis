@@ -11,13 +11,15 @@ library(survival)
 ```
 
 ```{r}
-seer = read_csv("./SEER_RECODE.csv")
+seer = read_csv("./SEER_RECODE_numeric.csv")
 
 seer=
   seer|>
   janitor::clean_names()|>
   mutate(race_time = survival_month*race_c)
 ```
+
+
 ```{r}
 ph_test = function(covariate){
 cox_model= coxph(Surv(survival_month, death_s) ~ covariate, data = seer)
@@ -29,17 +31,229 @@ print(result)
 
 ```
 
-
+# ph test for persistent poverty
 
 ```{r}
-cox_model= coxph(Surv(survival_month, death_s) ~ persistent_poverty+sex+age_c+marital+race+rural, data =  seer)
+cox_model= coxph(Surv(survival_month, death_s) ~ persistent_poverty_c, data =  seer)
+
+result = cox.zph(cox_model)
+
+print(result)
+
+cox_model= coxph(Surv(survival_month, death_o) ~ persistent_poverty_c, data =  seer)
+
+result = cox.zph(cox_model)
+
+print(result)
+```
+# ph test for overall death
+
+## ph test for the stratified analysis of different race groups
+
+```{r}
+seer_w = 
+seer|>
+  filter(race_c == 1)
+
+cox_model= coxph(Surv(survival_month, death_o) ~ persistent_poverty_c, data =  seer_w)
 
 result = cox.zph(cox_model)
 
 print(result)
 ```
 ```{r}
-cox_model= coxph(Surv(survival_month, death_s) ~ persistent_poverty+sex+age_c+marital+race_c+rural+race_time, data =  seer)
+seer_w = 
+seer|>
+  filter(race_c == 2)
+
+cox_model= coxph(Surv(survival_month, death_o) ~ persistent_poverty_c, data =  seer_w)
+
+result = cox.zph(cox_model)
+
+print(result)
+```
+
+```{r}
+seer_w = 
+seer|>
+  filter(race_c == 3)
+
+cox_model= coxph(Surv(survival_month, death_o) ~ persistent_poverty_c, data =  seer_w)
+
+result = cox.zph(cox_model)
+
+print(result)
+```
+
+```{r}
+seer_w = 
+seer|>
+  filter(race_c == 4)
+
+cox_model= coxph(Surv(survival_month, death_o) ~ persistent_poverty_c, data =  seer_w)
+
+result = cox.zph(cox_model)
+
+print(result)
+```
+
+```{r}
+seer_w = 
+seer|>
+  filter(race_c == 5)
+
+cox_model= coxph(Surv(survival_month, death_o) ~ persistent_poverty_c, data =  seer_w)
+
+result = cox.zph(cox_model)
+
+print(result)
+```
+## ph analysis for stages 
+
+```{r}
+seer_w = 
+seer|>
+  filter(stage_c == 0)
+
+cox_model= coxph(Surv(survival_month, death_o) ~ persistent_poverty_c, data =  seer_w)
+
+result = cox.zph(cox_model)
+
+print(result)
+```
+
+
+```{r}
+seer_w = 
+seer|>
+  filter(stage_c == 1)
+
+cox_model= coxph(Surv(survival_month, death_o) ~ persistent_poverty_c, data =  seer_w)
+
+result = cox.zph(cox_model)
+
+print(result)
+```
+
+
+```{r}
+seer_w = 
+seer|>
+  filter(stage_c == 2)
+
+cox_model= coxph(Surv(survival_month, death_o) ~ persistent_poverty_c, data =  seer_w)
+
+result = cox.zph(cox_model)
+
+print(result)
+```
+
+# ph test for cancer specific death
+
+## ph test for the stratified analysis of different race groups
+
+```{r}
+seer_w = 
+seer|>
+  filter(race_c == 1)
+
+cox_model= coxph(Surv(survival_month, death_s) ~ persistent_poverty_c, data =  seer_w)
+
+result = cox.zph(cox_model)
+
+print(result)
+```
+
+```{r}
+seer_w = 
+seer|>
+  filter(race_c == 2)
+
+cox_model= coxph(Surv(survival_month, death_s) ~ persistent_poverty_c, data =  seer_w)
+
+result = cox.zph(cox_model)
+
+print(result)
+```
+
+```{r}
+seer_w = 
+seer|>
+  filter(race_c == 3)
+
+cox_model= coxph(Surv(survival_month, death_s) ~ persistent_poverty_c, data =  seer_w)
+
+result = cox.zph(cox_model)
+
+print(result)
+```
+
+```{r}
+seer_w = 
+seer|>
+  filter(race_c == 4)
+
+cox_model= coxph(Surv(survival_month, death_s) ~ persistent_poverty_c, data =  seer_w)
+
+result = cox.zph(cox_model)
+
+print(result)
+```
+
+```{r}
+seer_w = 
+seer|>
+  filter(race_c == 5)
+
+cox_model= coxph(Surv(survival_month, death_s) ~ persistent_poverty_c, data =  seer_w)
+
+result = cox.zph(cox_model)
+
+print(result)
+```
+## ph analysis for stages 
+
+```{r}
+seer_w = 
+seer|>
+  filter(stage_c == 0)
+
+cox_model= coxph(Surv(survival_month, death_s) ~ persistent_poverty_c, data =  seer_w)
+
+result = cox.zph(cox_model)
+
+print(result)
+```
+
+
+```{r}
+seer_w = 
+seer|>
+  filter(stage_c == 1)
+
+cox_model= coxph(Surv(survival_month, death_s) ~ persistent_poverty_c, data =  seer_w)
+
+result = cox.zph(cox_model)
+
+print(result)
+```
+
+
+```{r}
+seer_w = 
+seer|>
+  filter(stage_c == 2)
+
+cox_model= coxph(Surv(survival_month, death_s) ~ persistent_poverty_c, data =  seer_w)
+
+result = cox.zph(cox_model)
+
+print(result)
+```
+
+
+```{r}
+cox_model= coxph(Surv(survival_month, death_o) ~ persistent_poverty_c+sex+age_c+marital+race_c+rural+race_time, data =  seer)
 
 result = cox.zph(cox_model)
 
