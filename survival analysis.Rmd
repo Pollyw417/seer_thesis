@@ -1,0 +1,48 @@
+---
+title: "Survival Analysis"
+author: "Polly Wu (rw3031)"
+date: "2025-01-10"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(survival)
+```
+
+```{r}
+seer = read_csv("./SEER_RECODE.csv")
+
+seer=
+  seer|>
+  janitor::clean_names()|>
+  mutate(race_time = survival_month*race_c)
+```
+```{r}
+ph_test = function(covariate){
+cox_model= coxph(Surv(survival_month, death_s) ~ covariate, data = seer)
+
+result = cox.zph(cox_model)
+
+print(result)
+}
+
+```
+
+
+
+```{r}
+cox_model= coxph(Surv(survival_month, death_s) ~ persistent_poverty+sex+age_c+marital+race+rural, data =  seer)
+
+result = cox.zph(cox_model)
+
+print(result)
+```
+```{r}
+cox_model= coxph(Surv(survival_month, death_s) ~ persistent_poverty+sex+age_c+marital+race_c+rural+race_time, data =  seer)
+
+result = cox.zph(cox_model)
+
+print(result)
+```
+
