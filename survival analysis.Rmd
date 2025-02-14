@@ -2,7 +2,7 @@
 title: "Survival Analysis"
 author: "Polly Wu (rw3031)"
 date: "2025-01-10"
-output: html_document
+output: github_document
 ---
 
 ```{r}
@@ -11,12 +11,19 @@ library(survival)
 ```
 
 ```{r}
-seer = read_csv("./SEER_RECODE_numeric.csv")
+seer = read_csv("./SEER_RECODE_ses.csv")
 
 seer=
   seer|>
   janitor::clean_names()|>
-  mutate(race_time = survival_month*race_c)
+  mutate(race_time = survival_month*race_c)|>
+  mutate(yost_c = case_when(
+    yost_ses == "Group 1 (lowest SES)" ~ 1,
+    yost_ses == "Group 2" ~ 2,
+    yost_ses == "Group 3" ~3,
+    yost_ses == "Group 4" ~ 4,
+    yost_ses == "Group 5 (highest SES)"~ 5)
+  )
 ```
 
 
